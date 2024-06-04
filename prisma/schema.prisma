@@ -7,6 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// npx prisma generate
+
+// npx prisma migrate dev
+
 model FixedExpense {
   id              String        @id @default(cuid())
   name            String
@@ -28,28 +32,6 @@ model FixedExpenses {
   User                       User           @relation(fields: [userId], references: [id])
 }
 
-model Percentages {
-  id                         String @id @default(cuid())
-  salary                     Float
-  fixedExpensesPercentage    Float
-  variableExpensesPercentage Float
-  investmentsPercentage      Float
-  userId                     String @unique
-  User                       User   @relation(fields: [userId], references: [id])
-}
-
-model User {
-  id               String            @id @default(cuid())
-  name             String
-  email            String            @unique
-  password         String
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  FixedExpenses    FixedExpenses?
-  Percentages      Percentages?
-  VariableExpenses VariableExpenses?
-}
-
 model VariableExpense {
   id                 String           @id @default(cuid())
   name               String
@@ -69,4 +51,71 @@ model VariableExpenses {
   targetPercentageMonthValue Float
   VariableExpense            VariableExpense[]
   User                       User              @relation(fields: [userId], references: [id])
+}
+
+model Investment {
+  id            String      @id @default(cuid())
+  name          String
+  category      String
+  value         Float
+  dueDate       String
+  investmentsId String
+  Investments   Investments @relation(fields: [investmentsId], references: [id])
+}
+
+model Investments {
+  id                         String       @id @default(cuid())
+  totalValue                 Float        @default(0)
+  targetPercentage           Float
+  targetPercentageValue      Float
+  userId                     String       @unique
+  targetPercentageMonthValue Float
+  Investment                 Investment[]
+  User                       User         @relation(fields: [userId], references: [id])
+}
+
+model Goal {
+  id       String @id @default(cuid())
+  name     String
+  category String
+  value    Float
+  dueDate  String
+  goalsId  String
+  Goals    Goals  @relation(fields: [goalsId], references: [id])
+}
+
+model Goals {
+  id                         String @id @default(cuid())
+  totalValue                 Float  @default(0)
+  targetPercentage           Float
+  targetPercentageValue      Float
+  userId                     String @unique
+  targetPercentageMonthValue Float
+  Goal                       Goal[]
+  User                       User   @relation(fields: [userId], references: [id])
+}
+
+model Percentages {
+  id                         String @id @default(cuid())
+  salary                     Float
+  fixedExpensesPercentage    Float
+  variableExpensesPercentage Float
+  investmentsPercentage      Float
+  goalsPercentage            Float
+  userId                     String @unique
+  User                       User   @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id               String            @id @default(cuid())
+  name             String
+  email            String            @unique
+  password         String
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  FixedExpenses    FixedExpenses?
+  VariableExpenses VariableExpenses?
+  Investments      Investments?
+  Goals            Goals?
+  Percentages      Percentages?
 }

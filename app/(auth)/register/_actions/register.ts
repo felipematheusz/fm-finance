@@ -28,29 +28,46 @@ export default async function register(formData: FormData) {
     throw new Error('Email já está cadastrado')
   }
 
-  await db.user.create({
+  const newUser = await db.user.create({
     data: {
       name: parsedData.name,
       email: parsedData.email,
       password: hashSync(parsedData.password, 10),
-      // FixedExpenses: {
-      //   create: {
-      //     totalValue: 0,
-      //     targetPercentage: 0,
-      //     targetPercentageValue: 0,
-      //     targetPercentageMonthValue: 0
-      //   }
-      // },
-      // VariableExpenses: {
-      //   create: {
-      //     totalValue: 0,
-      //     targetPercentage: 0,
-      //     targetPercentageValue: 0,
-      //     targetPercentageMonthValue: 0
-      //   }
-      // }
+      FixedExpenses: {
+        create: {
+          totalValue: 0,
+          targetPercentage: 0,
+          targetPercentageValue: 0,
+          targetPercentageMonthValue: 0
+        }
+      },
+      VariableExpenses: {
+        create: {
+          totalValue: 0,
+          targetPercentage: 0,
+          targetPercentageValue: 0,
+          targetPercentageMonthValue: 0
+        }
+      },
+      Investments: {
+        create: {
+          totalValue: 0,
+          targetPercentage: 0,
+          targetPercentageValue: 0,
+          targetPercentageMonthValue: 0
+        }
+      },
+      Goals: {
+        create: {
+          totalValue: 0,
+          targetPercentage: 0,
+          targetPercentageValue: 0,
+          targetPercentageMonthValue: 0
+        }
+      }
     }
   })
 
-  return redirect('/login')
+  return redirect(`/register/${newUser.id}`)
 }
+

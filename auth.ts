@@ -41,11 +41,31 @@ export const {
           return null
         }
 
-        return user
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        }
       }
     },
 
     ),
 
   ],
+  callbacks: {
+    async session({ session, token }) {
+
+      if (token && typeof token.id === 'string') {
+        session.user.id = token.id;
+      }
+      return session;
+    },
+    async jwt({ token, user }) {
+
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+  },
 });

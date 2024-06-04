@@ -13,7 +13,7 @@ import Link from "next/link";
 import register from "../_actions/register";
 import { Separator } from "@/components/ui/separator";
 
-export const RegisterForm = () => {
+export const PercentagesForm = () => {
   return (
     <div className="flex flex-col justify-center gap-4">
       <div className="flex items-center justify-center gap-4">
@@ -26,38 +26,44 @@ export const RegisterForm = () => {
         </div>
       </div>
       <form action={register}>
-        <Card className="w-full md:w-[650px]">
+        <Card className="w-full max-w-sm">
           <CardHeader>
-            <CardTitle className="text-2xl">Passo 1</CardTitle>
+            <CardTitle className="text-2xl">Registrar</CardTitle>
             <CardDescription>
-              Insira seus dados para ir para o próximo passo.
+              Insira seu salário e despesas para calcular o seu Plano
+              Financeiro.
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid gap-4 w-full">
-            <div className="flex gap-2 w-full">
-              <div className="grid gap-2 w-full">
-                <Label htmlFor="nome">Nome</Label>
+          <CardContent className="grid gap-4">
+            <div className="flex gap-2">
+              <div className="grid gap-2">
+                <Label htmlFor="salary">Salário</Label>
                 <Input
-                  name="name"
-                  type="text"
-                  placeholder="Insira seu nome"
+                  name="salary"
+                  type="number"
+                  placeholder="Insira seu salário"
                   required
                 />
               </div>
-              <div className="grid gap-2 w-full">
-                <Label htmlFor="email">Email</Label>
+              <div className="grid gap-2">
+                <Label htmlFor="fixed-expenses">Despesas Fixas</Label>
                 <Input
-                  name="email"
-                  type="email"
-                  placeholder="m@example.com"
+                  name="fixed-expenses"
+                  type="number"
+                  placeholder="Insira as despesas fixas"
                   required
                 />
               </div>
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input name="password" type="password" required />
+              <Label htmlFor="variable-expenses">Despesas Variáveis</Label>
+              <Input
+                name="variable-expenses"
+                type="number"
+                placeholder="Insira as despesas variáveis"
+                required
+              />
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
