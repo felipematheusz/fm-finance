@@ -15,8 +15,7 @@ export default async function login(formData: FormData) {
   } catch (e) {
     if (e instanceof AuthError) {
       if (e.type === "CredentialsSignin") {
-        e.message = "Credenciais inválidas";
-        throw e;
+        return { error: "Credenciais inválidas" };
       }
     }
   }

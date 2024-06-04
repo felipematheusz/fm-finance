@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,10 +13,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import login from "../_actions/login";
+import { toast } from "@/components/ui/use-toast";
+import { useFormStatus } from "react-dom";
 
 export const LoginForm = () => {
   return (
-    <form action={login}>
+    <form
+      action={async (formData: FormData) => {
+        const result = await login(formData);
+        if (result?.error) {
+          toast({
+            title: result.error,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Bem-vindo de volta!",
+            description: "Você está logado.",
+          });
+        }
+      }}
+    >
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">FM Finance</CardTitle>
