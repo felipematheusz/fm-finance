@@ -10,10 +10,33 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import register from "../_actions/register";
 import { Separator } from "@/components/ui/separator";
+import { registerPercentages } from "../_actions/percentages";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PercentagesSchema } from "@/schemas/auth";
+import { z } from "zod";
+import { toast } from "@/components/ui/use-toast";
 
 export const PercentagesForm = () => {
+  const form = useForm<z.infer<typeof PercentagesSchema>>({
+    resolver: zodResolver(PercentagesSchema),
+  });
+
+  const handleSubmit = form.handleSubmit(async (data) => {
+    try {
+      const result = await registerPercentages(data);
+      if (result?.error) {
+        toast({
+          title: "Erro",
+          description: result.error,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
   return (
     <div className="flex flex-col justify-center gap-4">
       <div className="flex items-center justify-center gap-4">
@@ -25,7 +48,7 @@ export const PercentagesForm = () => {
           <p className="text-white text-xl font-bold">2</p>
         </div>
       </div>
-      <form action={register}>
+      <form onSubmit={handleSubmit}>
         <Card className="w-full max-w-sm">
           <CardHeader>
             <CardTitle className="text-2xl">Registrar</CardTitle>
@@ -39,7 +62,7 @@ export const PercentagesForm = () => {
               <div className="grid gap-2">
                 <Label htmlFor="salary">Salário</Label>
                 <Input
-                  name="salary"
+                  {...form.register("salary")}
                   type="number"
                   placeholder="Insira seu salário"
                   required
@@ -48,7 +71,7 @@ export const PercentagesForm = () => {
               <div className="grid gap-2">
                 <Label htmlFor="fixed-expenses">Despesas Fixas</Label>
                 <Input
-                  name="fixed-expenses"
+                  {...form.register("fixedExpensesPercentage")}
                   type="number"
                   placeholder="Insira as despesas fixas"
                   required
@@ -59,7 +82,7 @@ export const PercentagesForm = () => {
             <div className="grid gap-2">
               <Label htmlFor="variable-expenses">Despesas Variáveis</Label>
               <Input
-                name="variable-expenses"
+                {...form.register("variableExpensesPercentage")}
                 type="number"
                 placeholder="Insira as despesas variáveis"
                 required

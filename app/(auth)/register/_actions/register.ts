@@ -4,35 +4,29 @@ import db from '@/lib/db'
 import { z } from 'zod'
 import { hashSync } from 'bcrypt-ts';
 import { redirect } from 'next/navigation';
+import { RegisterSchema } from '@/schemas/auth';
 
-export default async function register(formData: FormData) {
-  const createUserSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(6),
-    name: z.string()
-  })
 
-  const parsedData = createUserSchema.parse({
-    name: formData.get('name'),
-    email: formData.get('email'),
-    password: formData.get('password')
+export const register = async (userData: z.infer<typeof RegisterSchema>) => {
+  const { name, email, password } = userData
+
+  const existingUser = await db.user.findUnique({
+    where: { email }
   });
 
-  const user = await db.user.findUnique({
-    where: {
-      email: parsedData.email
+  if (existingUser) {
+    return {
+      error: "Usuário já existe",
     }
-  })
-
-  if (user) {
-    throw new Error('Email já está cadastrado')
   }
+
+  const hashedPassword = hashSync(password, 10)
 
   const newUser = await db.user.create({
     data: {
-      name: parsedData.name,
-      email: parsedData.email,
-      password: hashSync(parsedData.password, 10),
+      name,
+      email,
+      password: hashedPassword,
       FixedExpenses: {
         create: {
           totalValue: 0,

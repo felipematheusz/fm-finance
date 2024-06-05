@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,14 +12,44 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import registerPercentages from "../_actions/percentages";
 import { Separator } from "@/components/ui/separator";
+import { useForm } from "react-hook-form";
+import { PercentagesSchema } from "@/schemas/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { toast } from "@/components/ui/use-toast";
+import { registerPercentages } from "../_actions/percentages";
 
 export default function PercentagesForm({
   params,
 }: {
   params: { userId: string };
 }) {
+  const form = useForm<z.infer<typeof PercentagesSchema>>({
+    resolver: zodResolver(PercentagesSchema),
+  });
+
+  const handleSubmit = form.handleSubmit(async (data) => {
+    try {
+      const result = await registerPercentages({
+        salary: data.salary,
+        fixedExpensesPercentage: data.fixedExpensesPercentage,
+        variableExpensesPercentage: data.variableExpensesPercentage,
+        investmentsPercentage: data.investmentsPercentage,
+        goalsPercentage: data.goalsPercentage,
+        userId: params.userId,
+      });
+      if (result?.error) {
+        toast({
+          title: "Erro",
+          description: result.error,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
   return (
     <div className="flex flex-col justify-center gap-4">
       <div className="flex items-center justify-center gap-4">
@@ -29,7 +61,7 @@ export default function PercentagesForm({
           <p className="text-white text-xl font-bold">2</p>
         </div>
       </div>
-      <form action={registerPercentages}>
+      <form onSubmit={handleSubmit}>
         <Card className="w-full md:w-[650px]">
           <CardHeader>
             <CardTitle className="text-2xl">Passo 2</CardTitle>
@@ -42,7 +74,7 @@ export default function PercentagesForm({
             <div className="grid gap-2">
               <Label htmlFor="salary">Salário</Label>
               <Input
-                name="salary"
+                {...form.register("salary")}
                 type="number"
                 placeholder="Insira seu salário"
                 required
@@ -53,7 +85,7 @@ export default function PercentagesForm({
               <div className="grid gap-2">
                 <Label htmlFor="fixed-expenses">Despesas Fixas</Label>
                 <Input
-                  name="fixed-expenses"
+                  {...form.register("fixedExpensesPercentage")}
                   type="number"
                   placeholder="Insira a porcentagem"
                   required
@@ -62,7 +94,7 @@ export default function PercentagesForm({
               <div className="grid gap-2">
                 <Label htmlFor="variable-expenses">Despesas Variáveis</Label>
                 <Input
-                  name="variable-expenses"
+                  {...form.register("variableExpensesPercentage")}
                   type="number"
                   placeholder="Insira a porcentagem"
                   required
@@ -71,7 +103,7 @@ export default function PercentagesForm({
               <div className="grid gap-2">
                 <Label htmlFor="investments">Investimentos</Label>
                 <Input
-                  name="investments"
+                  {...form.register("investmentsPercentage")}
                   type="number"
                   placeholder="Insira a porcentagem"
                   required
@@ -80,7 +112,7 @@ export default function PercentagesForm({
               <div className="grid gap-2">
                 <Label htmlFor="goals">Metas</Label>
                 <Input
-                  name="goals"
+                  {...form.register("goalsPercentage")}
                   type="number"
                   placeholder="Insira a porcentagem"
                   required
@@ -89,7 +121,13 @@ export default function PercentagesForm({
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
-            <Button className="w-full">Cadastrar</Button>
+            <Button
+              type="submit"
+              disabled={form.formState.isSubmitting}
+              className="w-full"
+            >
+              {form.formState.isSubmitting ? "Calculando..." : "Cadastrar"}
+            </Button>
             <Link className="text-sm underline" href="/login">
               Já possui conta?
             </Link>
