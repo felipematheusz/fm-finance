@@ -11,45 +11,15 @@ datasource db {
 
 // npx prisma migrate dev
 
-// model FixedExpense {
-//   id              String        @id @default(cuid())
-//   name            String
-//   category        String
-//   value           Float
-//   dueDate         String
-//   fixedExpensesId String
-//   FixedExpenses   FixedExpenses @relation(fields: [fixedExpensesId], references: [id])
-// }
-
-// model FixedExpenses {
-//   id                         String         @id @default(cuid())
-//   totalValue                 Float          @default(0)
-//   targetPercentage           Float
-//   targetPercentageValue      Float
-//   targetPercentageMonthValue Float
-//   userId                     String         @unique
-//   FixedExpense               FixedExpense[]
-//   User                       User           @relation(fields: [userId], references: [id])
-// }
-
-// model Percentages {
-//   id                         String @id @default(cuid())
-//   salary                     Float
-//   fixedExpensesPercentage    Float
-//   variableExpensesPercentage Float
-//   investmentsPercentage      Float
-//   goalsPercentage            Float
-//   userId                     String @unique
-//   User                       User   @relation(fields: [userId], references: [id])
-// }
-
 model Expense {
   id            String      @id @default(cuid())
   name          String
+  date          DateTime
   value         Float
-  category      String
+  categoryId    String
   typeExpenseId String
-  TypeExpense   TypeExpense @relation(fields: [typeExpenseId], references: [id])
+  category      Category    @relation(fields: [categoryId], references: [id])
+  typeExpense   TypeExpense @relation(fields: [typeExpenseId], references: [id])
 }
 
 model TypeExpense {
@@ -61,14 +31,15 @@ model TypeExpense {
   targetPercentageMonthValue Float
   userId                     String
   expense                    Expense[]
-  User                       User      @relation(fields: [userId], references: [id])
+  user                       User      @relation(fields: [userId], references: [id])
 }
 
 model Category {
-  id     String @id @default(cuid())
-  name   String
-  userId String
-  User   User   @relation(fields: [userId], references: [id])
+  id      String    @id @default(cuid())
+  name    String
+  userId  String
+  expense Expense[]
+  user    User      @relation(fields: [userId], references: [id])
 }
 
 model User {

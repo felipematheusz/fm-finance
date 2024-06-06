@@ -59,7 +59,7 @@ export const CategoriesForm = ({ setStep }: CategoriesFormProps) => {
         <CardHeader>
           <CardTitle className="text-2xl">Passo 4</CardTitle>
           <CardDescription>
-            Adicione até 5 categorias para classificar seus gastos. Ex:
+            Adicione até 6 categorias para classificar seus gastos. Ex:
             Alimentação, Transporte, etc.
           </CardDescription>
         </CardHeader>
@@ -89,7 +89,7 @@ export const CategoriesForm = ({ setStep }: CategoriesFormProps) => {
               </div>
             </div>
           ))}
-          {fields.length < 5 && (
+          {fields.length < 6 && (
             <Button
               className="w-max text-sm flex items-center gap-2"
               variant="ghost"

@@ -74,3 +74,13 @@
       @apply bg-background text-foreground;
     }
   }
+
+  span,
+  p,
+  button,
+  input,
+  label,
+  select,
+  textarea {
+    font-size: 14px;
+  }
