@@ -1,5 +1,5 @@
-import { RegisterForm } from "./_components";
+import { Steps } from "./_components";
 
 export default function RegisterPage() {
-  return <RegisterForm />;
+  return <Steps />;
 }

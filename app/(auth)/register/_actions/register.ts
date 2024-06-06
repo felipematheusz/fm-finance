@@ -7,18 +7,8 @@ import { redirect } from 'next/navigation';
 import { RegisterSchema } from '@/schemas/auth';
 
 
-export const register = async (userData: z.infer<typeof RegisterSchema>) => {
-  const { name, email, password } = userData
-
-  const existingUser = await db.user.findUnique({
-    where: { email }
-  });
-
-  if (existingUser) {
-    return {
-      error: "Usuário já existe",
-    }
-  }
+const register = async (user: z.infer<typeof RegisterSchema>) => {
+  const { name, email, password, categories, typeExpenses, salary } = user
 
   const hashedPassword = hashSync(password, 10)
 
@@ -27,41 +17,47 @@ export const register = async (userData: z.infer<typeof RegisterSchema>) => {
       name,
       email,
       password: hashedPassword,
-      FixedExpenses: {
-        create: {
-          totalValue: 0,
-          targetPercentage: 0,
-          targetPercentageValue: 0,
-          targetPercentageMonthValue: 0
-        }
-      },
-      VariableExpenses: {
-        create: {
-          totalValue: 0,
-          targetPercentage: 0,
-          targetPercentageValue: 0,
-          targetPercentageMonthValue: 0
-        }
-      },
-      Investments: {
-        create: {
-          totalValue: 0,
-          targetPercentage: 0,
-          targetPercentageValue: 0,
-          targetPercentageMonthValue: 0
-        }
-      },
-      Goals: {
-        create: {
-          totalValue: 0,
-          targetPercentage: 0,
-          targetPercentageValue: 0,
-          targetPercentageMonthValue: 0
-        }
-      }
+      salary
     }
   })
 
-  return redirect(`/register/${newUser.id}`)
+  await db.category.createMany({
+    data: categories.map((category) => ({
+      name: category.name,
+      userId: newUser.id
+    }))
+  })
+
+  await db.typeExpense.createMany({
+    data: typeExpenses.map((typeExpense) => ({
+      name: typeExpense.name,
+      targetPercentage: typeExpense.percentage,
+      totalValue: 0,
+      targetPercentageValue: salary * (typeExpense.percentage / 100),
+      targetPercentageMonthValue: 0,
+      userId: newUser.id
+    }))
+  })
+
+  return redirect('/login')
 }
+
+const verifyUser = async (email: string) => {
+  const user = await db.user.findUnique({
+    where: { email }
+  })
+
+  if (user) {
+    return {
+      error: "Usuário já existe",
+    }
+  }
+
+  return user
+
+}
+
+
+
+export { register, verifyUser }
 

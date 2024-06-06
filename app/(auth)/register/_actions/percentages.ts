@@ -8,9 +8,9 @@ import { PercentagesSchema } from '@/schemas/auth';
 
 export const registerPercentages = async (data: z.infer<typeof PercentagesSchema>) => {
 
-  const { salary, fixedExpensesPercentage, variableExpensesPercentage, investmentsPercentage, goalsPercentage, userId } = data
+  const { fixedExpensesPercentage, variableExpensesPercentage, investmentsPercentage, goalsPercentage, userId } = data
 
-  if (!salary || !fixedExpensesPercentage || !variableExpensesPercentage || !investmentsPercentage || !goalsPercentage || !userId) {
+  if (!fixedExpensesPercentage || !variableExpensesPercentage || !investmentsPercentage || !goalsPercentage || !userId) {
     return {
       error: 'Dados incompletos. Por favor, preencha todos os campos obrigatórios.'
     }
@@ -18,7 +18,6 @@ export const registerPercentages = async (data: z.infer<typeof PercentagesSchema
 
   await db.percentages.create({
     data: {
-      salary,
       fixedExpensesPercentage,
       variableExpensesPercentage,
       investmentsPercentage,

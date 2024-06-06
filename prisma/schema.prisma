@@ -11,111 +11,74 @@ datasource db {
 
 // npx prisma migrate dev
 
-model FixedExpense {
-  id              String        @id @default(cuid())
-  name            String
-  category        String
-  value           Float
-  dueDate         String
-  fixedExpensesId String
-  FixedExpenses   FixedExpenses @relation(fields: [fixedExpensesId], references: [id])
-}
+// model FixedExpense {
+//   id              String        @id @default(cuid())
+//   name            String
+//   category        String
+//   value           Float
+//   dueDate         String
+//   fixedExpensesId String
+//   FixedExpenses   FixedExpenses @relation(fields: [fixedExpensesId], references: [id])
+// }
 
-model FixedExpenses {
-  id                         String         @id @default(cuid())
-  totalValue                 Float          @default(0)
-  targetPercentage           Float
-  targetPercentageValue      Float
-  userId                     String         @unique
-  targetPercentageMonthValue Float
-  FixedExpense               FixedExpense[]
-  User                       User           @relation(fields: [userId], references: [id])
-}
+// model FixedExpenses {
+//   id                         String         @id @default(cuid())
+//   totalValue                 Float          @default(0)
+//   targetPercentage           Float
+//   targetPercentageValue      Float
+//   targetPercentageMonthValue Float
+//   userId                     String         @unique
+//   FixedExpense               FixedExpense[]
+//   User                       User           @relation(fields: [userId], references: [id])
+// }
 
-model VariableExpense {
-  id                 String           @id @default(cuid())
-  name               String
-  category           String
-  value              Float
-  dueDate            String
-  variableExpensesId String
-  VariableExpenses   VariableExpenses @relation(fields: [variableExpensesId], references: [id])
-}
+// model Percentages {
+//   id                         String @id @default(cuid())
+//   salary                     Float
+//   fixedExpensesPercentage    Float
+//   variableExpensesPercentage Float
+//   investmentsPercentage      Float
+//   goalsPercentage            Float
+//   userId                     String @unique
+//   User                       User   @relation(fields: [userId], references: [id])
+// }
 
-model VariableExpenses {
-  id                         String            @id @default(cuid())
-  totalValue                 Float
-  targetPercentage           Float
-  targetPercentageValue      Float
-  userId                     String            @unique
-  targetPercentageMonthValue Float
-  VariableExpense            VariableExpense[]
-  User                       User              @relation(fields: [userId], references: [id])
-}
-
-model Investment {
+model Expense {
   id            String      @id @default(cuid())
   name          String
-  category      String
   value         Float
-  dueDate       String
-  investmentsId String
-  Investments   Investments @relation(fields: [investmentsId], references: [id])
+  category      String
+  typeExpenseId String
+  TypeExpense   TypeExpense @relation(fields: [typeExpenseId], references: [id])
 }
 
-model Investments {
-  id                         String       @id @default(cuid())
-  totalValue                 Float        @default(0)
+model TypeExpense {
+  id                         String    @id @default(cuid())
+  name                       String
+  totalValue                 Float     @default(0)
   targetPercentage           Float
   targetPercentageValue      Float
-  userId                     String       @unique
   targetPercentageMonthValue Float
-  Investment                 Investment[]
-  User                       User         @relation(fields: [userId], references: [id])
+  userId                     String
+  expense                    Expense[]
+  User                       User      @relation(fields: [userId], references: [id])
 }
 
-model Goal {
-  id       String @id @default(cuid())
-  name     String
-  category String
-  value    Float
-  dueDate  String
-  goalsId  String
-  Goals    Goals  @relation(fields: [goalsId], references: [id])
-}
-
-model Goals {
-  id                         String @id @default(cuid())
-  totalValue                 Float  @default(0)
-  targetPercentage           Float
-  targetPercentageValue      Float
-  userId                     String @unique
-  targetPercentageMonthValue Float
-  Goal                       Goal[]
-  User                       User   @relation(fields: [userId], references: [id])
-}
-
-model Percentages {
-  id                         String @id @default(cuid())
-  salary                     Float
-  fixedExpensesPercentage    Float
-  variableExpensesPercentage Float
-  investmentsPercentage      Float
-  goalsPercentage            Float
-  userId                     String @unique
-  User                       User   @relation(fields: [userId], references: [id])
+model Category {
+  id     String @id @default(cuid())
+  name   String
+  userId String
+  User   User   @relation(fields: [userId], references: [id])
 }
 
 model User {
-  id               String            @id @default(cuid())
-  name             String
-  email            String            @unique
-  password         String
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  FixedExpenses    FixedExpenses?
-  VariableExpenses VariableExpenses?
-  Investments      Investments?
-  Goals            Goals?
-  Percentages      Percentages?
+  id          String        @id @default(cuid())
+  name        String
+  email       String        @unique
+  password    String
+  salary      Float
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  category    Category[]
+  typeExpense TypeExpense[]
 }
