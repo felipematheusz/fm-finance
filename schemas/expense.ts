@@ -3,7 +3,7 @@ import { z } from "zod";
 const ExpenseSchema = z.object({
   id: z.string().optional(),
   name: z.string(),
-  value: z.number(),
+  value: z.coerce.number(),
   date: z.date(),
   categoryId: z.string(),
   typeExpenseId: z.string(),

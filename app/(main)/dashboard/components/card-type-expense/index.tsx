@@ -5,7 +5,7 @@ import { getTypeExpenses } from "../../_actions";
 export const CardsTypeExpense = async () => {
   const typeExpenses = await getTypeExpenses();
   return (
-    <div className="grid lg:grid-cols-4 gap-5">
+    <div className="flex justify-between flex-wrap md:flex-nowrap gap-5">
       {typeExpenses.map((typeExpense) => (
         <Card key={typeExpense.id} className="w-full">
           <div className="flex flex-col justify-start h-full">
