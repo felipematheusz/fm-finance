@@ -12,6 +12,9 @@ const getTypeExpenses = async () => {
   const typeExpenses = await db.typeExpense.findMany({
     where: {
       userId: session?.user?.id
+    },
+    orderBy: {
+      name: 'asc'
     }
   });
 
@@ -35,5 +38,31 @@ const createExpense = async (input: z.infer<typeof ExpenseSchema>) => {
   return expense;
 };
 
-export { getTypeExpenses, createExpense };
+
+const getTotalExpensesByDay = async () => {
+  const session = await auth();
+
+  const expenses = await db.expense.groupBy({
+    by: ['date'],
+    _sum: {
+      value: true
+    },
+    where: {
+      typeExpense: {
+        userId: session?.user?.id
+      }
+    },
+    orderBy: {
+      date: 'asc'
+    }
+  });
+
+  return expenses.map(expense => ({
+    date: expense.date,
+    totalValue: expense._sum.value
+  }));
+};
+
+
+export { getTypeExpenses, createExpense, getTotalExpensesByDay };
 
