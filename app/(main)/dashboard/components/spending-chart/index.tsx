@@ -1,4 +1,5 @@
 import { getTotalExpensesByDay } from "@/app/(main)/dashboard/_actions/type-expense";
+import { NotFound } from "@/components/shared";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 import dynamic from "next/dynamic";
@@ -31,7 +32,7 @@ export const SpendingChart = async () => {
         </CardHeader>
       </div>
       <div className="h-[300px]">
-        <Chart data={spendingData} />
+        {data.length > 0 ? <Chart data={spendingData} /> : <NotFound />}
       </div>
     </Card>
   );

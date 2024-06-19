@@ -1,4 +1,3 @@
-export { CardsTypeExpense } from "./card-type-expense";
 export { Add } from "./add";
 export { AddSheet } from "./add/components/add-sheet";
 export { CardProfile } from "./card-profile";

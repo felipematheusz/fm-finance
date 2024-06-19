@@ -3,6 +3,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { getTypeExpenses } from "../../_actions";
 import { Progress } from "@/components/ui/progress";
+import { CircleAlert } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export const CardProfile = async () => {
   const session = await auth();
@@ -10,8 +17,8 @@ export const CardProfile = async () => {
 
   return (
     <div className="w-[450px]">
-      <Card className="h-full p-4">
-        <div className="flex items-center gap-3 pb-4">
+      <Card className="h-full">
+        <div className="flex items-center gap-3 p-4">
           <div className="border p-2 w-max rounded-full">
             <Avatar className="w-16 h-16">
               <AvatarImage src="" alt="Avatar do usuário" />
@@ -26,15 +33,38 @@ export const CardProfile = async () => {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-nowrap gap-4">
-          {typeExpenses.map((typeExpense) => (
+        <div className="flex items-center justify-between border-t border-gray-200 pt-4 px-4">
+          <p className="text-base font-semibold">Suas Metas</p>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <CircleAlert color="gray" size={18} />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  Acompanhe suas metas e como você<br></br> está se comportando
+                  financeiramente.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+
+        <div
+          className={`flex flex-col md:flex-nowrap gap-4 max-h-[284px] p-4 ${
+            typeExpenses.length > 3 ? "overflow-y-auto" : ""
+          }`}
+        >
+          {typeExpenses.map((typeExpense, index) => (
             <div
               key={typeExpense?.id}
-              className="border-t border-gray-2000 pt-4"
+              className={`${
+                index !== 0 ? "border-t border-gray-200 pt-2" : ""
+              }`}
             >
               <span className="font-medium text-sm">{`${typeExpense?.name} (${typeExpense?.targetPercentage}%)`}</span>
 
-              <div className="mt-4">
+              <div className="mt-2">
                 <Progress
                   value={typeExpense?.targetPercentageMonthValue ?? 0}
                 />

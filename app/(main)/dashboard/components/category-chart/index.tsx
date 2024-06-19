@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 const Chart = dynamic(() => import("./react-apexcharts"), { ssr: false });
 
 import { getTotalExpensesByCategory } from "@/app/(main)/dashboard/_actions/category";
+import { NotFound } from "@/components/shared";
 
 export const CategoryChart = async () => {
   const backendData = await getTotalExpensesByCategory();
@@ -28,13 +29,7 @@ export const CategoryChart = async () => {
       </div>
 
       <div className="h-[288px] flex flex-col justify-center">
-        {backendData.length > 0 ? (
-          <Chart data={spendingData} />
-        ) : (
-          <div className="flex justify-center items-center h-full">
-            <p className="text-sm text-gray-500">Nenhum dado encontrado</p>
-          </div>
-        )}
+        {backendData.length > 0 ? <Chart data={spendingData} /> : <NotFound />}
       </div>
     </Card>
   );

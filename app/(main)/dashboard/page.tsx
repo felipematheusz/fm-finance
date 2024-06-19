@@ -7,8 +7,7 @@ import {
   SpendingChart,
   TableExpenses,
 } from "./components";
-import { getLastSixExpenses, getTypeExpenses } from "./_actions/type-expense";
-import { getCategories } from "./_actions";
+import { getLastSixExpenses } from "./_actions/type-expense";
 
 export const metadata: Metadata = {
   title: "Dashboard | FM Finance",
@@ -16,8 +15,6 @@ export const metadata: Metadata = {
 
 export default async function Dashboard() {
   const lastSixExpenses = await getLastSixExpenses();
-  const categories = await getCategories();
-  const typeExpenses = await getTypeExpenses();
 
   return (
     <div className="flex flex-col gap-5">
