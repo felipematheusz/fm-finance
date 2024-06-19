@@ -105,8 +105,8 @@ export const TableExpenses = ({
         </CardHeader>
       </div>
       <CardContent>
-        <div>
-          <div>
+        <div className="w-full h-[273px]">
+          <div className={lastSixExpenses.length === 0 ? "h-full" : ""}>
             {lastSixExpenses.length > 0 ? (
               <Table>
                 <TableHeader>

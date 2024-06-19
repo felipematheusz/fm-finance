@@ -12,6 +12,10 @@ export function middleware(req: NextRequest) {
   if (pathname.includes("/dashboard") && !token) {
     return NextResponse.redirect(new URL(getUrl("/login")));
   }
+
+  if (pathname === "/") {
+    return NextResponse.redirect(new URL(getUrl("/login")));
+  }
 }
 
 export const config = {

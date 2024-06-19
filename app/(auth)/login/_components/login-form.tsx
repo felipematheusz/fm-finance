@@ -52,14 +52,19 @@ export const LoginForm = () => {
             <Input
               name="email"
               type="email"
-              placeholder="m@example.com"
+              placeholder="Insira seu email"
               required
             />
           </div>
 
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input name="password" type="password" required />
+            <Input
+              name="password"
+              type="password"
+              placeholder="Insira sua senha"
+              required
+            />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col justify-center gap-4">

@@ -34,7 +34,7 @@ export const CardProfile = async () => {
         </div>
 
         <div className="flex items-center justify-between border-t border-gray-200 pt-4 px-4">
-          <p className="text-base font-semibold">Suas Metas</p>
+          <p className="text-base font-semibold">Sua Meta Mensal</p>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
