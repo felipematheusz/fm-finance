@@ -53,16 +53,73 @@ const getTotalExpensesByDay = async () => {
       }
     },
     orderBy: {
-      date: 'asc'
-    }
+      date: 'desc'
+    },
+    take: 7
   });
 
-  return expenses.map(expense => ({
+  return expenses.reverse().map(expense => ({
     date: expense.date,
     totalValue: expense._sum.value
   }));
 };
 
+const getLastSixExpenses = async () => {
+  const session = await auth();
 
-export { getTypeExpenses, createExpense, getTotalExpensesByDay };
+  const lastExpenses = await db.expense.findMany({
+    where: {
+      typeExpense: {
+        userId: session?.user?.id
+      }
+    },
+    include: {
+      category: true,
+      typeExpense: true
+    },
+    orderBy: {
+      date: 'desc'
+    },
+    take: 6
+  });
+
+  return lastExpenses.map(expense => ({
+    name: expense.name,
+    value: expense.value,
+    date: expense.date,
+    category: expense.category.name,
+    typeExpense: expense.typeExpense.name
+  }));
+};
+
+const getTotalValueOfExpenses = async () => {
+  const session = await auth();
+  const currentDate = new Date();
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
+  const total = await db.expense.aggregate({
+    _sum: {
+      value: true
+    },
+    where: {
+      typeExpense: {
+        userId: session?.user?.id
+      },
+      date: {
+        gte: firstDayOfMonth,
+        lte: lastDayOfMonth
+      }
+    }
+  });
+
+  const valorFormatado = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  }).format(total._sum.value ?? 0);
+
+  return valorFormatado;
+};
+
+export { getTypeExpenses, createExpense, getTotalExpensesByDay, getLastSixExpenses, getTotalValueOfExpenses };
 

@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import { ExpenseSheet } from "../sheet-expense";
 import { getCategories, getTypeExpenses } from "../../_actions";
+import { AddSheet } from "./components";
 
-export const AddExpenses = async () => {
+export const Add = async () => {
   const categories = await getCategories();
   const typeExpenses = await getTypeExpenses();
   return (
-    <ExpenseSheet categories={categories} typeExpenses={typeExpenses}>
+    <AddSheet categories={categories} typeExpenses={typeExpenses}>
       <Button className="flex items-center gap-2">
         <PlusCircle size={16} />
         Adicionar
       </Button>
-    </ExpenseSheet>
+    </AddSheet>
   );
 };

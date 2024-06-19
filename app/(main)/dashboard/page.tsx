@@ -1,25 +1,44 @@
 import { Metadata } from "next";
-import { AddExpenses, CardsTypeExpense, Graphics } from "./components";
-import { Card } from "@/components/ui/card";
+import {
+  Add,
+  CardProfile,
+  CategoryChart,
+  FinancialSumary,
+  SpendingChart,
+  TableExpenses,
+} from "./components";
+import { getLastSixExpenses, getTypeExpenses } from "./_actions/type-expense";
+import { getCategories } from "./_actions";
 
 export const metadata: Metadata = {
   title: "Dashboard | FM Finance",
 };
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const lastSixExpenses = await getLastSixExpenses();
+  const categories = await getCategories();
+  const typeExpenses = await getTypeExpenses();
+
   return (
     <div className="flex flex-col gap-5">
       <div className="flex justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <AddExpenses />
+
+        <Add />
       </div>
       <div className="flex gap-5">
-        <div className="w-[450px]">
-          <Card className="h-full"></Card>
-        </div>
+        <CardProfile />
         <div className="flex flex-col gap-5 w-full">
-          <CardsTypeExpense />
-          <Graphics />
+          <FinancialSumary />
+          <SpendingChart />
+        </div>
+      </div>
+      <div className="grid grid-cols-3 gap-5">
+        <div className="col-span-2">
+          <TableExpenses lastSixExpenses={lastSixExpenses} />
+        </div>
+        <div className="col-span-1">
+          <CategoryChart />
         </div>
       </div>
     </div>

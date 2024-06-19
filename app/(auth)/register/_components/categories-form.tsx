@@ -59,7 +59,7 @@ export const CategoriesForm = ({ setStep }: CategoriesFormProps) => {
         <CardHeader>
           <CardTitle className="text-2xl">Passo 4</CardTitle>
           <CardDescription>
-            Adicione até 6 categorias para classificar seus gastos. Ex:
+            Adicione até 6 categorias para classificar suas despesas. Ex:
             Alimentação, Transporte, etc.
           </CardDescription>
         </CardHeader>

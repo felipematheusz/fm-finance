@@ -14,15 +14,6 @@ export const CardsTypeExpense = async () => {
             </CardHeader>
             <CardContent>
               <div className="pt-4">
-                {/* <div className="flex items-center justify-between">
-                  <span>Total de Gastos Variados</span>
-                  <span className="font-medium">
-                    {typeExpense?.totalValue.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
-                  </span>
-                </div> */}
                 <div className="flex items-center justify-between">
                   <span>{`Meta (${typeExpense?.targetPercentage}% do salário)`}</span>
                   <span className="font-medium">

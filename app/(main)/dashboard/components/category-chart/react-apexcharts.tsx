@@ -62,6 +62,9 @@ const Chart: React.FC<ChartProps> = ({ data }) => {
         },
       },
     },
+    legend: {
+      position: "bottom" as "bottom",
+    },
   };
 
   const series = data.series[0].data;

@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 
 const Chart = dynamic(() => import("./react-apexcharts"), { ssr: false });
 
-export const DaySpendingChart = async () => {
+export const SpendingChart = async () => {
   const rawData = await getTotalExpensesByDay();
 
   const categories = rawData.map((item) =>
@@ -17,7 +17,7 @@ export const DaySpendingChart = async () => {
     categories: categories,
     series: [
       {
-        name: "Gastos",
+        name: "Despesas",
         data: data,
       },
     ],
@@ -27,7 +27,7 @@ export const DaySpendingChart = async () => {
     <Card>
       <div className="flex justify-between items-center border-b">
         <CardHeader>
-          <CardTitle>Gastos dos últimos 7 dias</CardTitle>
+          <CardTitle>Despesas por Período</CardTitle>
         </CardHeader>
       </div>
       <div className="h-[300px]">

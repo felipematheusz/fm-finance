@@ -13,7 +13,7 @@ export const CategoryChart = async () => {
     categories: backendData.map((item) => item?.categoryName || "Desconhecido"),
     series: [
       {
-        name: "Gastos",
+        name: "Despesas",
         data: backendData.map((item) => item.totalValue || 0),
       },
     ],
@@ -23,11 +23,11 @@ export const CategoryChart = async () => {
     <Card>
       <div className="flex justify-between items-center border-b">
         <CardHeader>
-          <CardTitle>Gastos Por Categoria</CardTitle>
+          <CardTitle>Despesas por Categoria</CardTitle>
         </CardHeader>
       </div>
 
-      <div className="h-[300px] flex flex-col justify-center">
+      <div className="h-[288px] flex flex-col justify-center">
         {backendData.length > 0 ? (
           <Chart data={spendingData} />
         ) : (
