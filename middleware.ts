@@ -2,7 +2,7 @@ import { getUrl } from "./lib/get-url";
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get("authjs.session-token");
+  const token = req.cookies.get(process.env.COOKIE_SESSION as string);
   const pathname = req.nextUrl.pathname;
 
   if (pathname === "/login" && token) {
