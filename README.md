@@ -11,7 +11,7 @@
 SISTEMA DE FINANÇAS PESSOAIS
 
 <p align="center">
-  <img src="public/fm-finance-dashboard.png" alt="Dashboard do FM Finance">
+  <img src="public/fm-finance.png" alt="Dashboard do FM Finance">
 </p>
 
 <br>
